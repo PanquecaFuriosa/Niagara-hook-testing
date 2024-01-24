@@ -41,8 +41,6 @@ all_services_up () {
     return 0
 }
 
-exit 0
-
 if [ ! -e ./env ] 
 then
     echo No .env file provided for docker compose sanity hook
