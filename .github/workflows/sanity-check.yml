@@ -1,0 +1,36 @@
+name: sanity-check-wf
+run-name: Checking sanity of release branch
+
+on  : [push]
+jobs:
+    check-connection:
+        runs-on : ubuntu-latest
+        steps   :
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '20' 
+
+            #- name: Create .env
+            #  run: |
+            #    echo "${{secrets.DUMMY_ENV_FILE}}" > .env
+
+            #- name: Docker compose up
+            #  run : docker-compose up -d
+
+            #- name: Docker compose down
+            #  if  : ${{ always() }}
+            #  run : docker-compose down
+
+            - name: Install dependencies
+              run : npm ci
+
+            - name: Run tests
+              run : npm test
+
+            - if  : ${{ success() }}
+              run : echo "Success!"
+
+            - if  : ${{ failure() }}
+              run : echo "Failure :("
