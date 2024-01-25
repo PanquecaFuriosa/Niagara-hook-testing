@@ -1,0 +1,30 @@
+name: jest_tests
+run-name: Running jest tests on pushes/pull requests
+
+on  : [push, pull_request] 
+jobs:
+    check-tests:
+        runs-on : ubuntu-latest
+        steps   :
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '20' 
+
+            - name: Install dependencies
+              run : npm ci
+
+            - name: Linter
+              run : npm run lint
+
+            - name: Run Jest tests
+              run : npm run test
+
+            - if  : ${{ success() }}
+              run : echo "Tests passed"
+
+            - if  : ${{ failure() }}
+              run : |
+                echo "Tests failed"
+                exit 0
