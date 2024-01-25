@@ -14,15 +14,14 @@ jobs:
                 echo "${{secrets.DUMMY_ENV_FILE}}" > .env
                 ls
                   
-            - name: Docker compose up
-              run : docker compose up -d
+            - name: Docker sanity check
+              run : |
+                chmod +x ./.github/scripts/docker_sanity_check.sh
+                ./.github/scripts/docker_sanity_check.sh
                   
             - if  : ${{ failure() }}
               run : |
                 echo Docker is not working properly
-                docker compose down
                 exit 1
 
-            - name: Docker compose down
-              if  : ${{ always() }}
-              run : docker compose down
+            - run : echo Successfully checked docker sanity
