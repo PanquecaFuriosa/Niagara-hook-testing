@@ -3,7 +3,7 @@ run-name: Checking sanity of release branch
 
 on  : [push]
 jobs:
-    check-connection:
+    check-tests:
         runs-on : ubuntu-latest
         steps   :
             - uses: actions/checkout@v4
